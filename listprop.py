@@ -31,7 +31,8 @@ def main():
                'RayWhite Carlingford':'https://raywhitecarlingford.com.au',
                'RayWhite Ashfield':'https://raywhiteashfield.com.au',
                'RayWhite Summer Hill':'https://raywhitesummerhill.com.au',
-               'RayWhite Paramatta':'https://raywhiteparramatta.com.au'
+               'RayWhite Paramatta':'https://raywhiteparramatta.com.au/'
+               
               }
     list_prop = []
 
@@ -47,21 +48,37 @@ def main():
                 price = prop.find('span',{'class':'proplist_item_price'}).text
                 address = prop.find('h2',{'class':'gamma'}).text
                 link = suburb_dict[suburb] + prop.find('a')['href']
+                image = prop.find('div',{'class':'proplist_item_image'}).find('img')['src']
+                
+                print(url)
+                bed = prop.find('li',{'class':'bed'}).text
+                bath = prop.find('li',{'class':'bath'}).text
+                #car = prop.find('li',{'class':'car'}).text
+                       
+                col1,col2 = st.columns(2)
+                
+                with col1:
+                    st.image(image)
+                with col2:
+                    st.markdown('**'+address+'**')
+                    st.markdown(description+' - '+bed+', '+bath)
+                    st.markdown(price)
+                    st.markdown(link)
                 
                 #get the property details
                 #page_prop = requests.get(link, headers = headers)
                 #time.sleep(1)
                 #soup_prop = BeautifulSoup(page_prop.content,'html.parser')
-            
                 #agent = soup_prop.find('div',{'class':'pdp_agents'})
                 #print(link)
                 #print(agent)
-                        
-                dict_prop = {'Suburb':suburb,'Address':address,'Description':description,'Price':price,'Link':link}
-                list_prop.append(dict_prop)     
+                 
+                #creating dataframe - currently not used       
+                #dict_prop = {'Suburb':suburb,'Address':address,'Description':description,'Price':price,'Link':link}
+                #list_prop.append(dict_prop)     
 
-    df = pd.DataFrame(list_prop)  
-    st.dataframe(df,use_container_width=True, width=1000)           
+    #df = pd.DataFrame(list_prop)  
+    #st.dataframe(df,use_container_width=True, width=1000)           
                 
 
 if __name__=='__main__':
