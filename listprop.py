@@ -3,7 +3,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import requests
 
-APP_TITTLE='Unit/Flat/Apartment up to 600$ pw'
+APP_TITTLE='Listed properties up to 600$ pw'
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"}
   
 def main():
@@ -23,7 +23,7 @@ def main():
     </style>
     """
     st.markdown(hide_streamlit_style,unsafe_allow_html=True)
-    suburb_dict = {'RayWhite Epping':'https://raywhiteepping.com.au',
+    dict1 = {'RayWhite Epping':'https://raywhiteepping.com.au',
                'RayWhite Ryde':'https://raywhiteryde.com.au',
                'RayWhite Eastwood':'https://raywhiteeastwood.com.au',
                'RayWhite North Ryde':'https://raywhitenorthryde.com.au',
@@ -34,10 +34,20 @@ def main():
                'RayWhite Paramatta':'https://raywhiteparramatta.com.au'
                
               }
-    list_prop = []
-
-    for suburb in suburb_dict:
-        url = suburb_dict[suburb] + '/properties/residential-for-rent?category=&keywords=&minBaths=0&minBeds=2&minCars=0&rentPrice=0-31284&sort=updatedAt+desc&suburbPostCode='
+ 
+    listing = st.multiselect('',['All RayWhite suburbs']+list(dict1.keys()))
+    
+    dict2 = dict1
+    
+    if listing:
+        if 'All RayWhite suburbs' not in listing:
+            dict2 = {}
+            for i in listing:
+                if i in list(dict1.keys()):
+                    dict2[i] = dict1[i]
+       
+    for suburb in dict2:
+        url = dict2[suburb] + '/properties/residential-for-rent?category=&keywords=&minBaths=0&minBeds=2&minCars=0&rentPrice=0-31284&sort=updatedAt+desc&suburbPostCode='
         page = requests.get(url, headers=headers)
 
         if page.status_code == 200:
@@ -47,10 +57,10 @@ def main():
                 description = prop.find('span',{'class':'proplist_item_descriptor muted'}).text
                 price = prop.find('span',{'class':'proplist_item_price'}).text
                 address = prop.find('h2',{'class':'gamma'}).text
-                link = suburb_dict[suburb] + prop.find('a')['href']
+                link = dict2[suburb] + prop.find('a')['href']
                 image = prop.find('div',{'class':'proplist_item_image'}).find('img')['src']
                 
-                print(url)
+                #print(url)
                 bed = prop.find('li',{'class':'bed'}).text
                 bath = prop.find('li',{'class':'bath'}).text
                 #car = prop.find('li',{'class':'car'}).text
