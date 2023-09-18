@@ -31,7 +31,7 @@ def main():
                'RayWhite Carlingford':'https://raywhitecarlingford.com.au',
                'RayWhite Ashfield':'https://raywhiteashfield.com.au',
                'RayWhite Summer Hill':'https://raywhitesummerhill.com.au',
-               'RayWhite Paramatta':'https://raywhiteparramatta.com.au/'
+               'RayWhite Paramatta':'https://raywhiteparramatta.com.au'
                
               }
     list_prop = []
