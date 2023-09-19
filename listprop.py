@@ -7,7 +7,7 @@ APP_TITTLE='Listed properties up to 600$ pw'
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"}
   
 def main():
-    st.set_page_config(APP_TITTLE,layout='centered',page_icon="")
+    st.set_page_config(APP_TITTLE,layout='centered',page_icon="https://cdn5.ep.dynamics.net/__resources/img/favicon-2017.d516ca4620c34215af43404a41b460ed.ico")
     st.title(APP_TITTLE) 
     #hide the menu, adjusting the padding-top margin
     hide_streamlit_style = """
@@ -32,7 +32,7 @@ def main():
                'RayWhite Ashfield':'https://raywhiteashfield.com.au',
                'RayWhite Summer Hill':'https://raywhitesummerhill.com.au',
                'RayWhite Paramatta':'https://raywhiteparramatta.com.au'
-               
+              
               }
  
     listing = st.multiselect('',['All RayWhite suburbs']+list(dict1.keys()))
@@ -56,7 +56,7 @@ def main():
             for prop in proplist:
                 description = prop.find('span',{'class':'proplist_item_descriptor muted'}).text
                 price = prop.find('span',{'class':'proplist_item_price'}).text
-                address = prop.find('h2',{'class':'gamma'}).text
+                address = prop.find('h2',{'class':'gamma'}).find('a')['data-ev-label']
                 link = dict2[suburb] + prop.find('a')['href']
                 image = prop.find('div',{'class':'proplist_item_image'}).find('img')['src']
                 
